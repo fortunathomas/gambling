@@ -1,22 +1,59 @@
-/* -------------------------------------------------------------------- */
-/* Tailwind base, components e utilities                              */
-/* -------------------------------------------------------------------- */
-@import "tailwindcss/preflight";
-@tailwind utilities;
+/* Import SF Pro */
+@import url('https://fonts.cdnfonts.com/css/sf-pro-display');
 
-/* -------------------------------------------------------------------- */
-/* Stili globali personalizzati                                         */
-/* -------------------------------------------------------------------- */
-
-/* Body principale */
+/* Body generale */
 body {
-  margin: 0;
-  padding: 0;
+  background: #0d0d0d;
+  color: #fff;
+  font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+  padding: 50px;
+  text-align: center;
 }
 
-/* Titoli */
-h1, h2, h3, h4, h5, h6 {
-  margin: 0;
-  padding: 0;
+/* Titolo */
+h1 {
+  font-size: 40px;
+  margin-bottom: 40px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
 }
 
+/* Contenitore 3 card */
+#array {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  width: 100%;
+}
+
+/* Card singola */
+#array h3 {
+  width: 80%;
+  max-width: 750px;
+
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+
+  padding: 20px 25px;
+  border-radius: 16px;
+
+  font-size: 19px;
+  font-weight: 500;
+  letter-spacing: 0.4px;
+
+  /* 🔥 Per andare a capo in modo elegante */
+  white-space: pre-wrap;   /* Rispetta i \n */
+  word-break: break-word;  /* Va a capo anche se lungo */
+  line-height: 1.6;
+
+  transition: 0.25s ease;
+}
+
+/* Hover stile macOS */
+#array h3:hover {
+  transform: scale(1.02);
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.22);
+}
