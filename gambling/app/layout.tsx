@@ -6,18 +6,161 @@ import '../styles/globals.css';  // Assicurati di importare gli stili globali
 const Layout = ({ children }: { children: React.ReactNode }) => {
     return (
         <html lang="it">
-        <head>
-            <meta charSet="UTF-8" />
-            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <head>
             <title>💎 Caccia al Tesoro</title>
-        </head>
+            <link rel="stylesheet" href="styles/Gambling.css" />
+            <script src="code/Gambling.js" defer></script>
+    </head>
         <body>
-        <header>
-            <h1>💎 Caccia al Tesoro</h1>
-        </header>
-        <main>{children}</main>
+
+        <div id="theme-switcher">
+            <button id="theme-button" aria-label="Cambia tema">🎨</button>
+            <div id="theme-menu" className="hidden">
+                <div className="theme-menu-title">Scegli Tema</div>
+                <button className="theme-option" data-theme="default">
+                    <span className="theme-preview" style="background: linear-gradient(135deg, #ffc400, #00cc66)"></span>
+                    <span>classNameico</span>
+                </button>
+                <button className="theme-option" data-theme="dark">
+                    <span className="theme-preview" style="background: linear-gradient(135deg, #60a5fa, #a78bfa)"></span>
+                    <span>Scuro</span>
+                </button>
+                <button className="theme-option" data-theme="neon">
+                    <span className="theme-preview" style="background: linear-gradient(135deg, #ec4899, #06b6d4)"></span>
+                    <span>Neon</span>
+                </button>
+                <button className="theme-option" data-theme="forest">
+                    <span className="theme-preview" style="background: linear-gradient(135deg, #10b981, #34d399)"></span>
+                    <span>Foresta</span>
+                </button>
+                <button className="theme-option" data-theme="sunset">
+                    <span className="theme-preview" style="background: linear-gradient(135deg, #f59e0b, #ef4444)"></span>
+                    <span>Tramonto</span>
+                </button>
+                <button className="theme-option" data-theme="ocean">
+                    <span className="theme-preview" style="background: linear-gradient(135deg, #0ea5e9, #06b6d4)"></span>
+                    <span>Oceano</span>
+                </button>
+            </div>
+        </div>
+    
+
+        <div className="game-container">
+    
+
+            <header className="game-header">
+                <div className="balance-display">
+                    <span className="balance-label">💰 Saldo</span>
+                    <span className="balance-amount"><span id="caramelle"></span> 💵</span>
+                </div>
+            </header>
+    
+
+            <div className="game-layout">
+    
+
+                <aside className="controls-panel">
+    
+
+                    <section className="control-section">
+                        <h3 className="section-title">Seleziona Difficoltà</h3>
+                        <div className="version-buttons">
+                            <button id="Versione1" className="version-btn">
+                                <span className="version-number">3×3</span>
+                                <span className="version-label">Facile</span>
+                            </button>
+                            <button id="Versione2" className="version-btn">
+                                <span className="version-number">4×4</span>
+                                <span className="version-label">Medio</span>
+                            </button>
+                            <button id="Versione3" className="version-btn">
+                                <span className="version-number">5×5</span>
+                                <span className="version-label">Difficile</span>
+                            </button>
+                        </div>
+                    </section>
+    
+
+                    <section className="control-section">
+                        <h3 className="section-title">Imposta Puntata</h3>
+                        <div className="bet-input-wrapper">
+                            <input type="number" id="scommessa" placeholder="0" />
+                        </div>
+                        <div className="bet-buttons">
+                            <button id="somma5" className="bet-btn">+5</button>
+                            <button id="somma10" className="bet-btn">+10</button>
+                            <button id="somma50" className="bet-btn">+50</button>
+                            <button id="somma100" className="bet-btn">+100</button>
+                        </div>
+                        <button id="maxbet" className="max-bet-btn">MAX BET</button>
+                    </section>
+    
+
+                    <section className="control-section info-section">
+                        <div className="info-row">
+                            <span className="info-label">Moltiplicatore</span>
+                            <span className="info-value">×<span id="moltiplicatore"></span></span>
+                        </div>
+                        <div className="info-row highlight">
+                            <span className="info-label">Vincita Potenziale</span>
+                            <span className="info-value"><span id="vincita"></span> 💵</span>
+                        </div>
+                    </section>
+    
+
+                    <div className="action-buttons">
+                        <button id="start" className="action-btn primary-btn">
+                            🎮 INIZIA PARTITA
+                        </button>
+                        <button id="accontentati" className="action-btn secondary-btn">
+                            💰 RITIRA VINCITA
+                        </button>
+                    </div>
+    
+                </aside>
+    
+
+                <main className="game-area">
+                    <div className="grid-wrapper">
+                        <div id="grid"></div>
+                    </div>
+                </main>
+    
+            </div>
+        </div>
+    
+
+        <div id="overlay" className="overlay">
+            <div id="popup" className="popup popup-lose">
+                <div className="popup-icon">💣</div>
+                <h2 className="popup-title">HAI PERSO!</h2>
+                <p className="popup-message">La bomba ti ha fatto saltare in aria!</p>
+                <button onclick="closePopup()" className="popup-btn">Riprova</button>
+            </div>
+        </div>
+    
+
+        <div id="overlay2" className="overlay">
+            <div id="popup2" className="popup popup-win">
+                <div className="popup-icon">💎</div>
+                <h2 className="popup-title">HAI VINTO!</h2>
+                <p className="popup-message">Hai trovato tutti i tesori!</p>
+                <button onclick="closePopup()" className="popup-btn">Fantastico!</button>
+            </div>
+        </div>
+    
+
+        <div id="overlay3" className="overlay">
+            <div id="popup3" className="popup popup-cashout">
+                <div className="popup-icon">💰</div>
+                <h2 className="popup-title">VINCITA RITIRATA!</h2>
+                <p className="popup-message">Hai incassato la tua vincita!</p>
+                <button onclick="closePopup()" className="popup-btn">Perfetto!</button>
+            </div>
+        </div>
+    
         </body>
-        </html>
+    </html>
     );
 };
 
