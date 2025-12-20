@@ -1,15 +1,22 @@
-"use client"; // Se utilizzi useState o altri hook
+"use client";
 
-import React from 'react';
-import '../styles/globals.css';  // Assicurati di importare gli stili globali
+import React, { useEffect } from 'react';
+import '../styles/globals.css';
+import { closePopup, setCaramelle, initGame } from "../script/gameLogic.js";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
+
+    useEffect(() => {
+        // Inizializza il gioco dopo che il DOM è pronto
+        initGame();
+    }, []);
+
     return (
         <html lang="it">
             <head>
             <title>💎 Caccia al Tesoro</title>
-            <link rel="stylesheet" href="styles/Gambling.css" />
-            <script src="code/Gambling.js" defer></script>
+            <link rel="stylesheet" href="../styles/globals.css" />
+            <script src="../script/gameLogic.js" defer></script>
     </head>
         <body>
 
@@ -18,27 +25,27 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
             <div id="theme-menu" className="hidden">
                 <div className="theme-menu-title">Scegli Tema</div>
                 <button className="theme-option" data-theme="default">
-                    <span className="theme-preview" style="background: linear-gradient(135deg, #ffc400, #00cc66)"></span>
-                    <span>classNameico</span>
+                    <span className="theme-preview" style={{background: "linear-gradient(135deg, #ffc400, #00cc66)"}}></span>
+                    <span>Classico</span>
                 </button>
                 <button className="theme-option" data-theme="dark">
-                    <span className="theme-preview" style="background: linear-gradient(135deg, #60a5fa, #a78bfa)"></span>
+                    <span className="theme-preview" style={{background: "linear-gradient(135deg, #60a5fa, #a78bfa)"}}></span>
                     <span>Scuro</span>
                 </button>
                 <button className="theme-option" data-theme="neon">
-                    <span className="theme-preview" style="background: linear-gradient(135deg, #ec4899, #06b6d4)"></span>
+                    <span className="theme-preview" style={{background: "linear-gradient(135deg, #ec4899, #06b6d4)"}}></span>
                     <span>Neon</span>
                 </button>
                 <button className="theme-option" data-theme="forest">
-                    <span className="theme-preview" style="background: linear-gradient(135deg, #10b981, #34d399)"></span>
+                    <span className="theme-preview" style={{background: "linear-gradient(135deg, #10b981, #34d399)"}}></span>
                     <span>Foresta</span>
                 </button>
                 <button className="theme-option" data-theme="sunset">
-                    <span className="theme-preview" style="background: linear-gradient(135deg, #f59e0b, #ef4444)"></span>
+                    <span className="theme-preview" style={{background: "linear-gradient(135deg, #f59e0b, #ef4444)"}}></span>
                     <span>Tramonto</span>
                 </button>
                 <button className="theme-option" data-theme="ocean">
-                    <span className="theme-preview" style="background: linear-gradient(135deg, #0ea5e9, #06b6d4)"></span>
+                    <span className="theme-preview" style={{background: "linear-gradient(135deg, #0ea5e9, #06b6d4)"}}></span>
                     <span>Oceano</span>
                 </button>
             </div>
@@ -135,7 +142,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                 <div className="popup-icon">💣</div>
                 <h2 className="popup-title">HAI PERSO!</h2>
                 <p className="popup-message">La bomba ti ha fatto saltare in aria!</p>
-                <button onclick="closePopup()" className="popup-btn">Riprova</button>
+                <button onClick={closePopup} className="popup-btn">Riprova</button>
             </div>
         </div>
     
@@ -145,7 +152,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                 <div className="popup-icon">💎</div>
                 <h2 className="popup-title">HAI VINTO!</h2>
                 <p className="popup-message">Hai trovato tutti i tesori!</p>
-                <button onclick="closePopup()" className="popup-btn">Fantastico!</button>
+                <button onClick={closePopup} className="popup-btn">Fantastico!</button>
             </div>
         </div>
     
@@ -155,7 +162,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                 <div className="popup-icon">💰</div>
                 <h2 className="popup-title">VINCITA RITIRATA!</h2>
                 <p className="popup-message">Hai incassato la tua vincita!</p>
-                <button onclick="closePopup()" className="popup-btn">Perfetto!</button>
+                <button onClick={closePopup} className="popup-btn">Perfetto!</button>
             </div>
         </div>
     
