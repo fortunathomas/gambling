@@ -1,0 +1,33 @@
+.gameContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.gameLayout {
+    display: flex;
+    justify-content: space-between;
+}
+
+.controlsPanel {
+    width: 30%;
+    padding: 20px;
+}
+
+.gameArea {
+    width: 65%;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.cell {
+    width: 60px;
+    height: 60px;
+    background-color: var(--color-cell-bg);
+    border: 2px solid var(--color-primary);
+    border-radius: 10px;
+    margin: 5px;
+}
