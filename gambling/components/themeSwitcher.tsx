@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from 'react';
 
 const themes = ['default', 'dark', 'neon', 'forest', 'sunset', 'ocean'];

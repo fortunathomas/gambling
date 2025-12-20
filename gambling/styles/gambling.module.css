@@ -1,7 +1,8 @@
+/* gambling.module.css */
+
 .gameContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    background-color: var(--color-background);
+    color: var(--color-text);
 }
 
 .gameLayout {
@@ -10,14 +11,11 @@
 }
 
 .controlsPanel {
-    width: 30%;
-    padding: 20px;
+    background-color: var(--color-card-bg);
+    color: var(--color-text);
 }
 
-.gameArea {
-    width: 65%;
-}
-
+/* Griglia di gioco */
 .grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);

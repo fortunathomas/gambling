@@ -1,6 +1,6 @@
-import GameControl from '../components/GameControl';
-import GameGrid from '../components/GameGrid';
-import ThemeSwitcher from '../components/ThemeSwitcher';
+import GameControl from '../components/gameControl';
+import GameGrid from '../components/gameGrid';
+import ThemeSwitcher from '../components/themeSwitcher';
 import styles from '../styles/gambling.module.css';
 
 const GamePage = () => {
@@ -8,7 +8,7 @@ const GamePage = () => {
       <div className={styles.gameContainer}>
         <header className={styles.gameHeader}>
           <div className={styles.balanceDisplay}>
-            <span className={styles.balanceLabel}>💰 Saldo</span>
+            <span className={styles.balanceLabel}>💰 Saldo </span>
             <span className={styles.balanceAmount}>500 💵</span>
           </div>
         </header>

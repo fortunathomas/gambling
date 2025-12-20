@@ -1,4 +1,6 @@
-import { useState } from 'react';
+"use client";
+
+import { useState } from 'react'
 
 const GameControl = () => {
     const [difficulty, setDifficulty] = useState('3x3');
