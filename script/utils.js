@@ -2,16 +2,15 @@
 //  UTILITY FUNCTIONS - Funzioni helper
 // ============================================================================
 
-// Configurazione delle versioni (RIMUOVI questa, non più usata)
-// export const versionSettings = { ... }
-
 // Calcola il moltiplicatore per ogni cella scoperta
 export function calcolaMoltiplicatorePerCella(celleRimaste, bombeRimaste) {
     const celleSicure = celleRimaste - bombeRimaste;
     if (celleSicure <= 0) return 1;
 
     const probabilitaSicura = celleSicure / celleRimaste;
-    return 1 / probabilitaSicura;
+    const moltiplicatoreStep = 1 / probabilitaSicura;
+
+    return moltiplicatoreStep;
 }
 
 // Calcola il moltiplicatore base in base alla percentuale di bombe
@@ -55,9 +54,15 @@ export function getRandomBombIndexes(totaleCelle, numBombe) {
     return bombe;
 }
 
-// Calcola il massimo numero di bombe (80% delle celle)
-export function getMaxBombe(totaleCelle) {
-    return Math.floor(totaleCelle * 0.8);
+// Calcola il massimo numero di bombe in base alla griglia
+// 3x3 (9 celle) = max 7 bombe
+// 4x4 (16 celle) = max 12 bombe
+// 5x5 (25 celle) = max 20 bombe
+export function getMaxBombe(versione) {
+    if (versione === 1) return 7;
+    if (versione === 2) return 12;
+    if (versione === 3) return 20;
+    return 1;
 }
 
 // Valida la scommessa

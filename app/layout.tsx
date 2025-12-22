@@ -178,21 +178,12 @@ const Layout = ({ }: { children: React.ReactNode }) => {
                             <span className="info-value"><span id="vincita"></span> 💵</span>
                         </div>
 
-                        <section className="control-section info-section">
-                            <div className="info-row">
-                                <span className="info-label">Moltiplicatore</span>
-                                <span className="info-value">×<span id="moltiplicatore">1.00</span></span>
-                            </div>
-                            <div className="info-row highlight">
-                                <span className="info-label">Vincita Potenziale</span>
-                                <span className="info-value"><span id="vincita">0</span> 💵</span>
-                            </div>
-                            {/* ⬇️ AGGIUNGI QUESTA RIGA */}
-                            <div className="info-row">
-                                <span className="info-label">Celle Sicure</span>
-                                <span className="info-value"><span id="celleSicure">0</span>/<span id="totaleCelle">0</span></span>
-                            </div>
-                        </section>
+                        {/* ⬇️ AGGIUNGI QUESTA RIGA */}
+                        <div className="info-row">
+                            <span className="info-label">Celle Sicure</span>
+                            <span className="info-value"><span id="celleSicure">0</span>/<span id="totaleCelle">0</span></span>
+                        </div>
+
 
                     </section>
 
