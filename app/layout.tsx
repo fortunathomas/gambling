@@ -1,10 +1,18 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import '@/styles/globals.css';
-import { closePopup, setCaramelle, initGame } from "../script/gameLogic.js";
+import { closePopup, initGame } from "@/script/gameLogic";
 
-const Layout = ({ children }: { children: React.ReactNode }) => {
+import '@/styles/globals.css';
+import '@/styles/themes.css';
+import '@/styles/layout.css';
+import '@/styles/controls.css';
+import '@/styles/game.css';
+import '@/styles/popups.css';
+import '@/styles/animations.css';
+
+
+const Layout = ({ }: { children: React.ReactNode }) => {
     const [gameStarted, setGameStarted] = useState(false);
 
     useEffect(() => {
