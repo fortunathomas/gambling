@@ -10,28 +10,29 @@ import '@/styles/controls.css';
 import '@/styles/game.css';
 import '@/styles/popups.css';
 import '@/styles/animations.css';
+import '@/styles/bomb-controls.css';
 
 
 const Layout = ({ }: { children: React.ReactNode }) => {
     const [gameStarted, setGameStarted] = useState(false);
 
     useEffect(() => {
-        // Inizializza il gioco dopo che il DOM è pronto
         initGame();
 
-        // Listener per mostrare la griglia quando il gioco inizia
         const gridElement = document.getElementById('grid');
         if (gridElement) {
             const observer = new MutationObserver((mutations) => {
                 mutations.forEach((mutation) => {
                     if (mutation.type === 'childList' && gridElement.children.length > 0) {
                         setGameStarted(true);
+                    } else if (mutation.type === 'childList' && gridElement.children.length === 0) {
+                        // ⬇️ AGGIUNGI QUESTA RIGA
+                        setGameStarted(false);
                     }
                 });
             });
 
             observer.observe(gridElement, { childList: true });
-
             return () => observer.disconnect();
         }
     }, []);
@@ -73,6 +74,33 @@ const Layout = ({ }: { children: React.ReactNode }) => {
                     <span className="theme-preview" style={{background: "linear-gradient(135deg, #0ea5e9, #06b6d4)"}}></span>
                     <span>Oceano</span>
                 </button>
+
+                {/* Nuovi Temi */}
+                <button className="theme-option" data-theme="cyberpunk">
+                    <span className="theme-preview" style={{background: "linear-gradient(135deg, #ff00ff, #00ffff)"}}></span>
+                    <span>Cyberpunk</span>
+                </button>
+                <button className="theme-option" data-theme="lava">
+                    <span className="theme-preview" style={{background: "linear-gradient(135deg, #ff4500, #ff8c00)"}}></span>
+                    <span>Lava</span>
+                </button>
+                <button className="theme-option" data-theme="arctic">
+                    <span className="theme-preview" style={{background: "linear-gradient(135deg, #00d4ff, #b3e5fc)"}}></span>
+                    <span>Arctic</span>
+                </button>
+                <button className="theme-option" data-theme="goldRush">
+                    <span className="theme-preview" style={{background: "linear-gradient(135deg, #ffd700, #ffb347)"}}></span>
+                    <span>Gold Rush</span>
+                </button>
+                <button className="theme-option" data-theme="purpleHaze">
+                    <span className="theme-preview" style={{background: "linear-gradient(135deg, #9c27b0, #e91e63)"}}></span>
+                    <span>Purple Haze</span>
+                </button>
+                <button className="theme-option" data-theme="matrix">
+                    <span className="theme-preview" style={{background: "linear-gradient(135deg, #00ff00, #39ff14)"}}></span>
+                    <span>Matrix</span>
+                </button>
+
             </div>
         </div>
 
@@ -107,10 +135,29 @@ const Layout = ({ }: { children: React.ReactNode }) => {
                         </div>
                     </section>
 
+                    {/* Bomb Selection */}
+                    <section className="control-section">
+                        <h3 className="section-title">Numero Bombe 💣</h3>
+                        <div className="bomb-control">
+                            <button id="decreaseBombs" className="bomb-btn">−</button>
+                            <input
+                                type="number"
+                                id="numBombe"
+                                className="bomb-input"
+                                min="1"
+                                max="20"
+                                defaultValue="1"
+                                readOnly
+                            />
+                            <button id="increaseBombs" className="bomb-btn">+</button>
+                        </div>
+                        <div id="riskLevel" className="risk-indicator">SELEZIONA GRIGLIA</div>
+                    </section>
+
                     <section className="control-section">
                         <h3 className="section-title">Imposta Puntata</h3>
                         <div className="bet-input-wrapper">
-                            <input type="number" id="scommessa" placeholder="0" />
+                            <input type="number" id="scommessa" placeholder="0" defaultValue="0" />
                         </div>
                         <div className="bet-buttons">
                             <button id="somma5" className="bet-btn">+5</button>
@@ -130,6 +177,23 @@ const Layout = ({ }: { children: React.ReactNode }) => {
                             <span className="info-label">Vincita Potenziale</span>
                             <span className="info-value"><span id="vincita"></span> 💵</span>
                         </div>
+
+                        <section className="control-section info-section">
+                            <div className="info-row">
+                                <span className="info-label">Moltiplicatore</span>
+                                <span className="info-value">×<span id="moltiplicatore">1.00</span></span>
+                            </div>
+                            <div className="info-row highlight">
+                                <span className="info-label">Vincita Potenziale</span>
+                                <span className="info-value"><span id="vincita">0</span> 💵</span>
+                            </div>
+                            {/* ⬇️ AGGIUNGI QUESTA RIGA */}
+                            <div className="info-row">
+                                <span className="info-label">Celle Sicure</span>
+                                <span className="info-value"><span id="celleSicure">0</span>/<span id="totaleCelle">0</span></span>
+                            </div>
+                        </section>
+
                     </section>
 
                     <div className="action-buttons">
@@ -157,7 +221,10 @@ const Layout = ({ }: { children: React.ReactNode }) => {
             <div id="losePopup" className="popup popup-lose">
                 <div className="popup-icon">💣</div>
                 <h2 className="popup-title">HAI PERSO!</h2>
-                <p className="popup-message">La bomba ti ha fatto saltare in aria!</p>
+                <p className="popup-message">
+                    La bomba ti ha fatto saltare in aria!<br/>
+                    Hai trovato <strong><span id="statCelleTrovate">0</span></strong> diamanti 💎
+                </p>
                 <button onClick={closePopup} className="popup-btn">Riprova</button>
             </div>
         </div>
@@ -167,7 +234,10 @@ const Layout = ({ }: { children: React.ReactNode }) => {
             <div id="winPopup" className="popup popup-win">
                 <div className="popup-icon">💎</div>
                 <h2 className="popup-title">HAI VINTO!</h2>
-                <p className="popup-message">Hai trovato tutti i tesori!</p>
+                <p className="popup-message">
+                    Hai trovato tutti i tesori!<br/>
+                    Vincita: <strong><span id="statVincita">0</span> 💵</strong>
+                </p>
                 <button onClick={closePopup} className="popup-btn">Fantastico!</button>
             </div>
         </div>
@@ -177,7 +247,10 @@ const Layout = ({ }: { children: React.ReactNode }) => {
             <div id="cashoutPopup" className="popup popup-cashout">
                 <div className="popup-icon">💰</div>
                 <h2 className="popup-title">VINCITA RITIRATA!</h2>
-                <p className="popup-message">Hai incassato la tua vincita!</p>
+                <p className="popup-message">
+                    Hai incassato la tua vincita!<br/>
+                    Totale: <strong><span id="statCashout">0</span> 💵</strong>
+                </p>
                 <button onClick={closePopup} className="popup-btn">Perfetto!</button>
             </div>
         </div>
