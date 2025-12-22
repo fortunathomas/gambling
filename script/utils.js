@@ -8,9 +8,7 @@ export function calcolaMoltiplicatorePerCella(celleRimaste, bombeRimaste) {
     if (celleSicure <= 0) return 1;
 
     const probabilitaSicura = celleSicure / celleRimaste;
-    const moltiplicatoreStep = 1 / probabilitaSicura;
-
-    return moltiplicatoreStep;
+    return 1 / probabilitaSicura;
 }
 
 // Calcola il moltiplicatore base in base alla percentuale di bombe
