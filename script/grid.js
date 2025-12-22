@@ -6,25 +6,41 @@ import * as state from './state.js';
 import * as utils from './utils.js';
 import * as animations from './animations.js';
 import * as popups from './popups.js';
-import { getThemeImage } from './themes.js';
+import {getThemeImage} from './themes.js';
 
 // Array per gestire le celle
 export let celle = [];
-export let bombe = [];
+export let bombe = []; // ← CAMBIATO da tesori
 export let cliccata = [];
 
 // Reset degli array
 export function resetArrays() {
     celle = [];
-    bombe = [];
+    bombe = []; // ← CAMBIATO da tesori
     cliccata = [];
+}
+
+// Nasconde il wrapper della griglia
+export function hideGridWrapper() {
+    const gridWrapper = document.querySelector('.grid-wrapper');
+    if (gridWrapper) {
+        gridWrapper.classList.add('hidden');
+    }
+}
+
+// Mostra il wrapper della griglia
+export function showGridWrapper() {
+    const gridWrapper = document.querySelector('.grid-wrapper');
+    if (gridWrapper) {
+        gridWrapper.classList.remove('hidden');
+    }
 }
 
 // Rimuove tutte le celle dalla griglia
 export function clearGrid() {
     celle.forEach(c => c.remove());
     resetArrays();
-    hideGridWrapper(); // ← Aggiunto
+    hideGridWrapper();
 }
 
 // Crea la griglia di gioco
@@ -35,8 +51,10 @@ export function creaGriglia(versione, numBombe, currentTheme) {
         return false;
     }
 
+    // Pulisce la griglia esistente
     clearGrid();
 
+    // Ottiene le dimensioni dalla versione
     const gridSize = utils.getTotaleCelle(versione);
     const columns = utils.getGridColumns(versione);
 
@@ -45,6 +63,7 @@ export function creaGriglia(versione, numBombe, currentTheme) {
         return false;
     }
 
+    // Imposta le colonne della griglia
     grid.style.gridTemplateColumns = `repeat(${columns}, 1fr)`;
 
     // Crea le celle
@@ -55,10 +74,12 @@ export function creaGriglia(versione, numBombe, currentTheme) {
         cliccata.push(false);
     }
 
-    // Genera gli indici delle bombe (non più solo 1!)
+    // Genera gli indici delle bombe (multiple!)
     bombe = utils.getRandomBombIndexes(gridSize, numBombe);
 
+    // Mostra il wrapper della griglia
     showGridWrapper();
+
     return true;
 }
 
@@ -90,12 +111,15 @@ export function addAllClickHandlers(versione, numBombe) {
 
 // Gestisce il click su una cella
 async function handleCellClick(index, versione, numBombe) {
+    // Previene click multipli sulla stessa cella
     if (cliccata[index]) return;
 
     cliccata[index] = true;
     const cella = celle[index];
 
+    // Animazione iniziale
     animations.addRevealAnimation(cella);
+
     await animations.delay(300);
 
     cella.innerHTML = "";
@@ -135,7 +159,7 @@ async function handleBombClick(cella, versione, numBombe) {
 
     hideGridWrapper();
 
-    // Aggiorna saldo e mostra popup
+    // Aggiorna il saldo
     state.setCaramelle(state.getCaramelle() - state.totalescommessa);
 
     // Aggiorna statistiche
@@ -143,6 +167,8 @@ async function handleBombClick(cella, versione, numBombe) {
     if (statEl) statEl.textContent = state.trovati;
 
     state.setInGioco(false);
+
+    // Mostra popup di sconfitta
     popups.showLosePopup();
 }
 
@@ -158,13 +184,11 @@ async function handleDiamondClick(cella, versione, numBombe) {
     // Calcola moltiplicatore dinamico
     const totaleCelle = utils.getTotaleCelle(versione);
     const celleRimaste = totaleCelle - state.trovati;
-    const bombeRimaste = numBombe;
-
-    const stepMolt = utils.calcolaMoltiplicatorePerCella(celleRimaste, bombeRimaste);
+    const stepMolt = utils.calcolaMoltiplicatorePerCella(celleRimaste, numBombe);
     state.multiplyMoltiplicatore(stepMolt);
-    state.aggiornaMoltiplicatore(versione, numBombe);
+    state.aggiornaMoltiplicatore();
 
-    // Controlla vittoria
+    // Controlla se ha vinto (trovato tutti i diamanti)
     const celleSicureTotali = totaleCelle - numBombe;
     if (state.trovati === celleSicureTotali) {
         await handleVictory(versione, numBombe);
@@ -195,9 +219,10 @@ async function handleVictory(versione, numBombe) {
         bonus
     );
 
+    // Nascondi la griglia
     hideGridWrapper();
 
-    // Aggiorna saldo
+    // Aggiorna il saldo
     state.setCaramelle(state.getCaramelle() + premio);
 
     // Aggiorna statistiche
@@ -205,21 +230,7 @@ async function handleVictory(versione, numBombe) {
     if (statEl) statEl.textContent = premio;
 
     state.setInGioco(false);
+
+    // Mostra popup di vittoria
     popups.showWinPopup();
-}
-
-// Nasconde il wrapper della griglia
-export function hideGridWrapper() {
-    const gridWrapper = document.querySelector('.grid-wrapper');
-    if (gridWrapper) {
-        gridWrapper.classList.add('hidden');
-    }
-}
-
-// Mostra il wrapper della griglia
-export function showGridWrapper() {
-    const gridWrapper = document.querySelector('.grid-wrapper');
-    if (gridWrapper) {
-        gridWrapper.classList.remove('hidden');
-    }
 }

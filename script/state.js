@@ -8,13 +8,7 @@ export let inGioco = false;
 export let totalescommessa = 0;
 export let cmoltiplicatore = 1;
 export let trovati = 0;
-
-export let numBombe = 1;  // Numero di bombe selezionate
-
-// Setter per numBombe
-export function setNumBombe(value) {
-    numBombe = value;
-}
+export let numBombe = 1; // ← AGGIUNTO
 
 // Setters per modificare lo stato
 export function setVersione(v) {
@@ -35,6 +29,10 @@ export function setMoltiplicatore(value) {
 
 export function setTrovati(value) {
     trovati = value;
+}
+
+export function setNumBombe(value) { // ← AGGIUNTO
+    numBombe = value;
 }
 
 export function incrementTrovati() {
@@ -78,7 +76,7 @@ export function resetScommessa() {
 // ============================================================================
 //  GESTIONE MOLTIPLICATORE
 // ============================================================================
-export function aggiornaMoltiplicatore(versione = 0, numBombe = 1) {
+export function aggiornaMoltiplicatore() {
     const moltiplicatoreEl = document.getElementById("moltiplicatore");
     const vincitaEl = document.getElementById("vincita");
     const celleSicureEl = document.getElementById("celleSicure");
@@ -118,7 +116,7 @@ export function resetState() {
     totalescommessa = 0;
     cmoltiplicatore = 1;
     trovati = 0;
-    numBombe = 1;  // ← AGGIUNGI questa riga
+    numBombe = 1; // ← AGGIUNTO
     resetScommessa();
     aggiornaMoltiplicatore();
 }

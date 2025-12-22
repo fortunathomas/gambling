@@ -7,7 +7,6 @@ import * as grid from './grid.js';
 import * as utils from './utils.js';
 import * as popups from './popups.js';
 import * as themes from './themes.js';
-import {hideGridWrapper} from "./grid.js";
 
 // ============================================================================
 //  FUNZIONE DI INIZIALIZZAZIONE PRINCIPALE
@@ -25,7 +24,7 @@ export function initGame() {
     // Inizializza i controlli
     initVersionControls(elementi);
     initBetControls(elementi);
-    initBombControls();
+    initBombControls(); // ← AGGIUNTO
     initActionButtons(elementi);
     initThemeSystem();
 
@@ -66,6 +65,7 @@ function verificaElementiDOM() {
 function initVersionControls({ v1, v2, v3 }) {
     const versioni = [v1, v2, v3];
 
+    // Listener per cambiare la versione
     versioni.forEach((btn, index) => {
         btn.addEventListener("click", () => {
             if (state.inGioco) return;
@@ -135,6 +135,7 @@ function aggiungiScommessa(amount) {
     if (state.inGioco) return;
     setTotaleScommessa(state.totalescommessa + amount);
 }
+
 // ============================================================================
 //  INIZIALIZZAZIONE CONTROLLI BOMBE
 // ============================================================================
@@ -151,15 +152,14 @@ function initBombControls() {
 
     // Aggiorna il max quando cambia versione
     function aggiornaMaxBombe() {
-        const totaleCelle = utils.getTotaleCelle(state.versione);
-        if (totaleCelle === 0) {
+        if (state.versione === 0) {
             numBombeInput.max = 1;
             state.setNumBombe(1);
             numBombeInput.value = 1;
             return;
         }
 
-        const maxBombe = utils.getMaxBombe(totaleCelle);
+        const maxBombe = utils.getMaxBombe(state.versione);
         numBombeInput.max = maxBombe;
 
         if (state.numBombe > maxBombe) {
@@ -168,7 +168,7 @@ function initBombControls() {
         }
 
         aggiornaRischio();
-        state.aggiornaMoltiplicatore(state.versione, state.numBombe);
+        state.aggiornaMoltiplicatore();
     }
 
     // Aggiorna livello di rischio
@@ -213,7 +213,7 @@ function initBombControls() {
             state.setNumBombe(state.numBombe - 1);
             numBombeInput.value = state.numBombe;
             aggiornaRischio();
-            state.aggiornaMoltiplicatore(state.versione, state.numBombe);
+            state.aggiornaMoltiplicatore();
         }
     });
 
@@ -224,7 +224,7 @@ function initBombControls() {
             state.setNumBombe(state.numBombe + 1);
             numBombeInput.value = state.numBombe;
             aggiornaRischio();
-            state.aggiornaMoltiplicatore(state.versione, state.numBombe);
+            state.aggiornaMoltiplicatore();
         }
     });
 
@@ -240,7 +240,7 @@ function initBombControls() {
         state.setNumBombe(val);
         numBombeInput.value = val;
         aggiornaRischio();
-        state.aggiornaMoltiplicatore(state.versione, state.numBombe);
+        state.aggiornaMoltiplicatore();
     });
 
     // Esporta per usarla quando cambia versione
@@ -265,12 +265,14 @@ function initActionButtons({ start, accontentati }) {
 //  AVVIO PARTITA
 // ============================================================================
 function startGame() {
+    // Valida la versione
     const versionCheck = utils.validaVersione(state.versione);
     if (!versionCheck.valid) {
         alert(versionCheck.message);
         return;
     }
 
+    // Valida la scommessa
     const betCheck = utils.validaScommessa(state.totalescommessa, state.getCaramelle());
     if (!betCheck.valid) {
         alert(betCheck.message);
@@ -281,7 +283,7 @@ function startGame() {
     state.setInGioco(true);
     state.setMoltiplicatore(1);
     state.setTrovati(0);
-    state.aggiornaMoltiplicatore(state.versione, state.numBombe);
+    state.aggiornaMoltiplicatore();
 
     // Crea la griglia CON numero bombe
     const success = grid.creaGriglia(state.versione, state.numBombe, themes.currentTheme);
