@@ -30,7 +30,7 @@ export const themes = {
         primary: '#10b981',
         primaryHover: '#059669',
         secondary: '#34d399',
-        background: '#064e3b',
+        background: '#021b14',
         cardBg: '#065f46',
         cellBg: '#047857',
         text: '#d1fae5',
