@@ -2,13 +2,44 @@
 //  UTILITY FUNCTIONS - Funzioni helper
 // ============================================================================
 
-// Calcola il moltiplicatore per ogni cella scoperta
-export function calcolaMoltiplicatorePerCella(celleRimaste, bombeRimaste) {
-    const celleSicure = celleRimaste - bombeRimaste;
-    if (celleSicure <= 0) return 1;
+// House edge (margine del casinò) - 3% è standard
+const HOUSE_EDGE = 0.97; // 97% RTP = 3% house edge
 
-    const probabilitaSicura = celleSicure / celleRimaste;
-    return 1 / probabilitaSicura;
+// Calcola il moltiplicatore per ogni cella scoperta
+// Formula corretta: moltiplica per (1 / probabilità_sicura) ad ogni cella trovata
+export function calcolaMoltiplicatorePerCella(totaleCelle, numBombe, celleTrovate) {
+    // Se non hai trovato nulla, parte da 1
+    if (celleTrovate === 0) return 1.00;
+
+    const celleSicureTotali = totaleCelle - numBombe;
+
+    // Calcola il moltiplicatore moltiplicando per ogni step
+    let moltiplicatore = 1.00;
+
+    for (let i = 0; i < celleTrovate; i++) {
+        // Celle rimaste PRIMA di scoprire la cella i-esima
+        const celleRimastePreClick = totaleCelle - i;
+
+        // Celle sicure rimaste PRIMA di scoprire la cella i-esima
+        const celleSicureRimastePreClick = celleSicureTotali - i;
+
+        // Probabilità di trovare una cella sicura in quel momento
+        const probabilitaSicura = celleSicureRimastePreClick / celleRimastePreClick;
+
+        // Il payout per quel click è l'inverso della probabilità
+        const payoutClick = 1 / probabilitaSicura;
+
+        // Moltiplica il moltiplicatore totale
+        moltiplicatore *= payoutClick;
+    }
+
+    // Applica house edge
+    moltiplicatore *= HOUSE_EDGE;
+
+    // DEBUG
+    console.log(`🎲 Trovati: ${celleTrovate}/${celleSicureTotali} → Molt: ${moltiplicatore.toFixed(4)}x`);
+
+    return moltiplicatore;
 }
 
 // Calcola il moltiplicatore base in base alla percentuale di bombe

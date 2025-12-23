@@ -39,9 +39,7 @@ export function incrementTrovati() {
     trovati++;
 }
 
-export function multiplyMoltiplicatore(factor) {
-    cmoltiplicatore *= factor;
-}
+// NOTA: multiplyMoltiplicatore non è più usato, ora usiamo setMoltiplicatore direttamente
 
 // ============================================================================
 //  GESTIONE SALDO (CARAMELLE)
@@ -50,7 +48,7 @@ export function setCaramelle(n) {
     if (n < 0) n = 0;
     const elemento = document.getElementById("caramelle");
     if (elemento) {
-        elemento.textContent = n;
+        elemento.textContent = n.toString();
     }
 }
 
@@ -63,15 +61,12 @@ export function getCaramelle() {
 // ============================================================================
 export function updateScommessaInput(value) {
     const scommessa = document.getElementById("scommessa");
-    if (scommessa) {
-        scommessa.value = value;
+    if (scommessa && scommessa instanceof HTMLInputElement) {
+        scommessa.value = value.toString();
     }
 }
 
-export function resetScommessa() {
-    totalescommessa = 0;
-    updateScommessaInput(0);
-}
+// NOTA: resetScommessa non è più usato
 
 // ============================================================================
 //  GESTIONE MOLTIPLICATORE
@@ -82,22 +77,45 @@ export function aggiornaMoltiplicatore() {
     const celleSicureEl = document.getElementById("celleSicure");
     const totaleCelleEl = document.getElementById("totaleCelle");
 
-    if (moltiplicatoreEl) moltiplicatoreEl.textContent = cmoltiplicatore.toFixed(2);
-    if (vincitaEl) vincitaEl.textContent = Math.floor(totalescommessa * cmoltiplicatore);
+    // DEBUG
+    console.log(`💰 Aggiornamento display:`);
+    console.log(`   - Moltiplicatore: ${cmoltiplicatore.toFixed(2)}x`);
+    console.log(`   - Scommessa: ${totalescommessa}`);
+    console.log(`   - Vincita potenziale: ${Math.floor(totalescommessa * cmoltiplicatore)}`);
+    console.log(`   - Elemento molt trovato: ${!!moltiplicatoreEl}`);
+    console.log(`   - Elemento vincita trovato: ${!!vincitaEl}`);
+
+    if (moltiplicatoreEl) {
+        moltiplicatoreEl.textContent = cmoltiplicatore.toFixed(2);
+        console.log(`   ✅ Molt aggiornato a: ${moltiplicatoreEl.textContent}`);
+    } else {
+        console.log(`   ❌ Elemento moltiplicatore NON trovato!`);
+    }
+
+    if (vincitaEl) {
+        const vincita = Math.floor(totalescommessa * cmoltiplicatore);
+        vincitaEl.textContent = vincita.toString();
+        console.log(`   ✅ Vincita aggiornata a: ${vincitaEl.textContent}`);
+    } else {
+        console.log(`   ❌ Elemento vincita NON trovato!`);
+    }
 
     // Aggiorna contatore celle sicure
     const totaleCelle = getTotaleCelle(versione);
     const celleSicureTotali = totaleCelle - numBombe;
-    if (celleSicureEl) celleSicureEl.textContent = trovati;
-    if (totaleCelleEl) totaleCelleEl.textContent = celleSicureTotali;
+    if (celleSicureEl) celleSicureEl.textContent = trovati.toString();
+    if (totaleCelleEl) totaleCelleEl.textContent = celleSicureTotali.toString();
 
     if (inGioco && cmoltiplicatore > 1) {
-        moltiplicatoreEl?.parentElement.classList.add('pulse');
-        vincitaEl?.parentElement.classList.add('pulse');
+        const moltParent = moltiplicatoreEl?.parentElement;
+        const vincParent = vincitaEl?.parentElement;
+
+        if (moltParent) moltParent.classList.add('pulse');
+        if (vincParent) vincParent.classList.add('pulse');
 
         setTimeout(() => {
-            moltiplicatoreEl?.parentElement.classList.remove('pulse');
-            vincitaEl?.parentElement.classList.remove('pulse');
+            if (moltParent) moltParent.classList.remove('pulse');
+            if (vincParent) vincParent.classList.remove('pulse');
         }, 500);
     }
 }
@@ -116,7 +134,7 @@ export function resetState(keepBet = false) {
 
     if (!keepBet) {
         totalescommessa = 0;
-        resetScommessa();
+        updateScommessaInput(0);
     }
 
     cmoltiplicatore = 1;

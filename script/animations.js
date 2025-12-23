@@ -22,7 +22,7 @@ export function addBombAnimation(cella) {
 export function addDiamondAnimation(cella, isCombo = false) {
     cella.classList.remove('revealing');
     cella.classList.add('diamond-reveal');
-    
+
     if (isCombo) {
         cella.classList.add('combo-hit');
     }
@@ -49,12 +49,15 @@ export function pulseMoltiplicatore() {
     const moltiplicatoreEl = document.getElementById("moltiplicatore");
     const vincitaEl = document.getElementById("vincita");
 
-    moltiplicatoreEl?.parentElement.classList.add('pulse');
-    vincitaEl?.parentElement.classList.add('pulse');
+    const moltParent = moltiplicatoreEl?.parentElement;
+    const vincParent = vincitaEl?.parentElement;
+
+    if (moltParent) moltParent.classList.add('pulse');
+    if (vincParent) vincParent.classList.add('pulse');
 
     setTimeout(() => {
-        moltiplicatoreEl?.parentElement.classList.remove('pulse');
-        vincitaEl?.parentElement.classList.remove('pulse');
+        if (moltParent) moltParent.classList.remove('pulse');
+        if (vincParent) vincParent.classList.remove('pulse');
     }, 500);
 }
 
@@ -81,24 +84,4 @@ export async function animateDiamondSequence(cella, isCombo = false) {
     cella.innerHTML = "";
     addDiamondAnimation(cella, isCombo);
     cella.innerHTML = "💎";
-}
-
-// Animazione bomba secondaria (per le altre bombe)
-export function addBombSecondaryAnimation(cella) {
-    cella.classList.add('bomb-reveal-secondary');
-}
-
-// Animazione diamante mancato
-export function addDiamondMissedAnimation(cella) {
-    cella.classList.add('diamond-reveal-missed');
-}
-
-// Animazione bomba alla vittoria
-export function addBombWinAnimation(cella) {
-    cella.classList.add('bomb-reveal-win');
-}
-
-// Animazione bomba al cashout
-export function addBombCashoutAnimation(cella) {
-    cella.classList.add('bomb-reveal-cashout');
 }

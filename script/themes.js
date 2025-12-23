@@ -59,7 +59,7 @@ export const themes = {
     arctic: {
         primary: '#00d4ff',
         primaryHover: '#00bfea',
-        secondary: '#b3e5fc',
+        secondary: '#7c9faf',
         background: '#0a1929',
         cardBg: '#1e3a52',
         cellBg: '#2d4f6b',

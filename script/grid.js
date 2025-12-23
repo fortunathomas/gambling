@@ -6,8 +6,8 @@ import * as state from './state.js';
 import * as utils from './utils.js';
 import * as animations from './animations.js';
 import * as popups from './popups.js';
-import {getThemeImage} from './themes.js';
-import {onBalanceUpdate} from './gameLogic.js';
+import { getThemeImage } from './themes.js';
+import { onBalanceUpdate } from './gameLogic.js';
 
 // Array per gestire le celle
 export let celle = [];
@@ -200,11 +200,19 @@ async function handleDiamondClick(cella, versione, numBombe) {
 
     state.incrementTrovati();
 
-    // Calcola moltiplicatore dinamico
+    // Calcola moltiplicatore con la formula corretta
     const totaleCelle = utils.getTotaleCelle(versione);
-    const celleRimaste = totaleCelle - state.trovati;
-    const stepMolt = utils.calcolaMoltiplicatorePerCella(celleRimaste, numBombe);
-    state.multiplyMoltiplicatore(stepMolt);
+    const nuovoMoltiplicatore = utils.calcolaMoltiplicatorePerCella(
+        totaleCelle,
+        numBombe,
+        state.trovati
+    );
+
+    // DEBUG
+    console.log(`🎲 Trovati: ${state.trovati}/${totaleCelle - numBombe}`);
+    console.log(`📊 Nuovo moltiplicatore: ${nuovoMoltiplicatore.toFixed(4)}x`);
+
+    state.setMoltiplicatore(nuovoMoltiplicatore);
     state.aggiornaMoltiplicatore();
 
     // Controlla se ha vinto (trovato tutti i diamanti)
