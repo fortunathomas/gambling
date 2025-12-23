@@ -1,0 +1,71 @@
+# Changelog
+Tutti i cambiamenti rilevanti del progetto **gambling – Caccia al Tesoro**.
+
+Il formato segue lo standard **Keep a Changelog**
+https://keepachangelog.com/
+
+---
+
+## [Unreleased]
+### Fixed
+- Fix animazioni di gioco
+- Correzione moltiplicatore
+- Fix tema "forest"
+- Fix grid.js
+- Fix gameLogic.js e grid.js
+- Sistemazione bomb-styles.css
+- Reset max bet dopo ogni partita
+- Correzione numero massimo bombe
+- Fix utils.js
+- Fix layout globale con themes v2 e gestione bombe
+
+---
+
+## [0.3.0] - 2025-12-22
+### Added
+- Aggiunta immagini PNG per themes v2
+- Introduzione layout themes v2
+- Aggiunto file `CHANGELOG.md`
+
+### Changed
+- Inizio versione v2 del progetto
+- Aggiornamento link del gioco
+- Deploy aggiornato su Vercel
+- Sezione installazione semplificata nel README
+- Revisione completa README per "Caccia al Tesoro"
+
+### Fixed
+- Fix div post win/lose
+- Fix animazioni + rimozione temi obsoleti
+- Fix numero massimo bombe e doppio moltiplicatore
+
+### Refactor
+- Refactor generale del progetto
+- Split dei file JavaScript
+- Split dei file CSS
+
+### Removed
+- Rimozione `node_modules`
+- Eliminazione `package.json`
+- Eliminazione `package-lock.json`
+
+### Chore
+- Aggiornamento `.gitignore`
+- Merge branch remoti (`origin/main`, pull request)
+
+---
+
+## [0.2.0] - 2025-12-20
+### Added
+- Creazione README.md iniziale per "Caccia al Tesoro"
+
+### Fixed
+- Fix vari e stabilizzazione generale del gioco
+
+---
+
+## [0.1.0] - 2025-12-19
+### Initial
+- Setup iniziale progetto
+- Commit iniziali
+- Struttura base del gioco
