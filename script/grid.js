@@ -6,8 +6,8 @@ import * as state from './state.js';
 import * as utils from './utils.js';
 import * as animations from './animations.js';
 import * as popups from './popups.js';
-import { getThemeImage } from './themes.js';
-import { onBalanceUpdate } from './gameLogic.js';
+import {getThemeImage} from './themes.js';
+import {onBalanceUpdate} from './gameLogic.js';
 
 // Array per gestire le celle
 export let celle = [];
@@ -203,9 +203,7 @@ async function handleDiamondClick(cella, versione, numBombe) {
     // Calcola moltiplicatore dinamico
     const totaleCelle = utils.getTotaleCelle(versione);
     const celleRimaste = totaleCelle - state.trovati;
-    const bombeRimaste = numBombe;
-
-    const stepMolt = utils.calcolaMoltiplicatorePerCella(celleRimaste, bombeRimaste);
+    const stepMolt = utils.calcolaMoltiplicatorePerCella(celleRimaste, numBombe);
     state.multiplyMoltiplicatore(stepMolt);
     state.aggiornaMoltiplicatore();
 
