@@ -1,159 +1,136 @@
 /* ============================================================================
-   CELLE DI GIOCO
+   CELLE DI GIOCO - OTTIMIZZATE PER PERFORMANCE
    ============================================================================ */
 #grid button {
-  all: unset;
-  width: 110px;
-  height: 110px;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0;
-  margin: 0;
-  border-radius: 12px;
-  font-size: 50px;
-  background: var(--color-cell-bg);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-  transform-style: preserve-3d;
+    all: unset;
+    width: 110px;
+    height: 110px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    border-radius: 12px;
+    font-size: 50px;
+    background: var(--color-cell-bg);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    position: relative;
+    overflow: hidden;
+    will-change: transform;
 }
 
 #grid button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
-  opacity: 0;
-  transition: opacity 0.3s ease;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.2s ease;
 }
 
 #grid button:hover::before {
-  opacity: 1;
+    opacity: 1;
 }
 
 #grid button:hover {
-  transform: translateY(-5px) scale(1.05);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
 }
 
 #grid button img.cella-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 12px;
-  pointer-events: none;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+    pointer-events: none;
 }
 
-/* Animazione Flip quando la cella viene rivelata */
+/* Animazione Flip quando la cella viene rivelata - PIÙ VELOCE */
 #grid button.revealing {
-  animation: cardFlip 0.6s ease-out forwards;
+    animation: cardFlip 0.25s ease-out forwards;
 }
 
-/* Animazione per diamante (vittoria) */
+/* Animazione per diamante (vittoria) - PIÙ VELOCE */
 #grid button.diamond-reveal {
-  animation: diamondReveal 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+    animation: diamondReveal 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
-/* Animazione per bomba (sconfitta) */
+/* Animazione per bomba (sconfitta) - PIÙ VELOCE */
 #grid button.bomb-reveal {
-  animation: bombReveal 0.6s ease-out forwards;
+    animation: bombReveal 0.35s ease-out forwards;
 }
 
-/* Effetto particelle per il diamante */
+/* Effetto particelle per il diamante - PIÙ VELOCE */
 #grid button.diamond-reveal::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(circle, rgba(255, 215, 0, 0.6) 0%, transparent 70%);
-  transform: translate(-50%, -50%) scale(0);
-  border-radius: 50%;
-  animation: sparkle 0.8s ease-out forwards;
-  pointer-events: none;
-  z-index: -1;
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.6) 0%, transparent 70%);
+    transform: translate(-50%, -50%) scale(0);
+    border-radius: 50%;
+    animation: sparkle 0.5s ease-out forwards;
+    pointer-events: none;
+    z-index: -1;
 }
 
-/* Animazione extra per combo di diamanti */
+/* Animazione extra per combo di diamanti - PIÙ VELOCE */
 #grid button.diamond-reveal.combo-hit {
-  animation: diamondCombo 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+    animation: diamondCombo 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
-/* Effetto particelle più intense per combo */
+/* Effetto particelle più intense per combo - PIÙ VELOCE */
 #grid button.diamond-reveal.combo-hit::after {
-  background: radial-gradient(circle,
-  rgba(255, 215, 0, 0.9) 0%,
-  rgba(0, 204, 102, 0.6) 40%,
-  transparent 70%);
-  animation: sparkleCombo 1s ease-out forwards;
+    background: radial-gradient(circle,
+    rgba(255, 215, 0, 0.9) 0%,
+    rgba(0, 204, 102, 0.6) 40%,
+    transparent 70%);
+    animation: sparkleCombo 0.6s ease-out forwards;
 }
 
-/* Effetto esplosione per la bomba */
+/* Effetto esplosione per la bomba - PIÙ VELOCE */
 #grid button.bomb-reveal::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(circle, rgba(255, 100, 0, 0.8) 0%, rgba(255, 0, 0, 0.4) 40%, transparent 70%);
-  transform: translate(-50%, -50%) scale(0);
-  border-radius: 50%;
-  animation: explosion 0.6s ease-out forwards;
-  pointer-events: none;
-  z-index: -1;
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(255, 100, 0, 0.8) 0%, rgba(255, 0, 0, 0.4) 40%, transparent 70%);
+    transform: translate(-50%, -50%) scale(0);
+    border-radius: 50%;
+    animation: explosion 0.4s ease-out forwards;
+    pointer-events: none;
+    z-index: -1;
 }
 
-/* Shake dell'intera griglia quando si trova una bomba */
+/* Shake dell'intera griglia quando si trova una bomba - PIÙ CORTO */
 .grid-wrapper.shake {
-  animation: gridShake 0.5s ease-in-out;
+    animation: gridShake 0.3s ease-in-out;
 }
 
 /* ============================================================================
    RESPONSIVE
    ============================================================================ */
 @media (max-width: 1024px) {
-  #grid button {
-    width: 90px;
-    height: 90px;
-    font-size: 40px;
-  }
+    #grid button {
+        width: 90px;
+        height: 90px;
+        font-size: 40px;
+    }
 }
 
 @media (max-width: 768px) {
-  #grid button {
-    width: 70px;
-    height: 70px;
-    font-size: 35px;
-  }
-}
-
-/* Bomba secondaria (altre bombe rivelate) */
-#grid button.bomb-reveal-secondary {
-    background: #cc0000;
-    opacity: 0.7;
-}
-
-/* Diamante mancato */
-#grid button.diamond-reveal-missed {
-    opacity: 0.5;
-}
-
-/* Bomba alla vittoria */
-#grid button.bomb-reveal-win {
-    background: #666;
-    opacity: 0.6;
-}
-
-/* Bomba al cashout */
-#grid button.bomb-reveal-cashout {
-    background: #999;
-    opacity: 0.5;
+    #grid button {
+        width: 70px;
+        height: 70px;
+        font-size: 35px;
+    }
 }

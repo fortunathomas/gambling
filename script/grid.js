@@ -6,18 +6,22 @@ import * as state from './state.js';
 import * as utils from './utils.js';
 import * as animations from './animations.js';
 import * as popups from './popups.js';
-import {getThemeImage} from './themes.js';
+import { getThemeImage } from './themes.js';
 
 // Array per gestire le celle
 export let celle = [];
 export let bombe = []; // ← CAMBIATO da tesori
 export let cliccata = [];
 
+// Flag per prevenire click multipli rapidi
+let isProcessingClick = false;
+
 // Reset degli array
 export function resetArrays() {
     celle = [];
     bombe = []; // ← CAMBIATO da tesori
     cliccata = [];
+    isProcessingClick = false; // Reset del flag
 }
 
 // Nasconde il wrapper della griglia
@@ -40,6 +44,7 @@ export function showGridWrapper() {
 export function clearGrid() {
     celle.forEach(c => c.remove());
     resetArrays();
+    isProcessingClick = false; // Reset del flag
     hideGridWrapper();
 }
 
@@ -111,8 +116,14 @@ export function addAllClickHandlers(versione, numBombe) {
 
 // Gestisce il click su una cella
 async function handleCellClick(index, versione, numBombe) {
+    // ⬇️ BLOCCA TUTTI I CLICK SE STA GIÀ PROCESSANDO
+    if (isProcessingClick) return;
+
     // Previene click multipli sulla stessa cella
     if (cliccata[index]) return;
+
+    // ⬇️ ATTIVA IL FLAG PER BLOCCARE ALTRI CLICK
+    isProcessingClick = true;
 
     cliccata[index] = true;
     const cella = celle[index];
@@ -120,18 +131,22 @@ async function handleCellClick(index, versione, numBombe) {
     // Animazione iniziale
     animations.addRevealAnimation(cella);
 
-    await animations.delay(300);
+    await animations.delay(200); // ← RIDOTTO da 300 a 200
 
     cella.innerHTML = "";
 
     // Controlla se è una bomba
     if (bombe.includes(index)) {
         await handleBombClick(cella, versione, numBombe);
+        // Non resetta il flag perché il gioco è finito
         return;
     }
 
     // È un diamante
     await handleDiamondClick(cella, versione, numBombe);
+
+    // ⬇️ RILASCIA IL FLAG DOPO CHE L'ANIMAZIONE È FINITA
+    isProcessingClick = false;
 }
 
 // Gestisce il click su una bomba
@@ -141,7 +156,7 @@ async function handleBombClick(cella, versione, numBombe) {
     animations.shakeGrid();
 
     // Rivela tutte le celle
-    await animations.delay(300);
+    await animations.delay(200); // ← RIDOTTO da 300 a 200
     celle.forEach((c, i) => {
         if (!cliccata[i]) {
             c.innerHTML = "";
@@ -155,7 +170,7 @@ async function handleBombClick(cella, versione, numBombe) {
         }
     });
 
-    await animations.delay(700);
+    await animations.delay(400); // ← RIDOTTO da 700 a 400
 
     hideGridWrapper();
 
@@ -184,7 +199,9 @@ async function handleDiamondClick(cella, versione, numBombe) {
     // Calcola moltiplicatore dinamico
     const totaleCelle = utils.getTotaleCelle(versione);
     const celleRimaste = totaleCelle - state.trovati;
-    const stepMolt = utils.calcolaMoltiplicatorePerCella(celleRimaste, numBombe);
+    const bombeRimaste = numBombe;
+
+    const stepMolt = utils.calcolaMoltiplicatorePerCella(celleRimaste, bombeRimaste);
     state.multiplyMoltiplicatore(stepMolt);
     state.aggiornaMoltiplicatore();
 
@@ -198,7 +215,7 @@ async function handleDiamondClick(cella, versione, numBombe) {
 // Gestisce la vittoria completa
 async function handleVictory(versione, numBombe) {
     // Rivela le bombe rimaste
-    await animations.delay(300);
+    await animations.delay(200); // ← RIDOTTO da 300 a 200
     celle.forEach((c, i) => {
         if (!cliccata[i]) {
             c.innerHTML = "";
@@ -209,7 +226,7 @@ async function handleVictory(versione, numBombe) {
         }
     });
 
-    await animations.delay(900);
+    await animations.delay(500); // ← RIDOTTO da 900 a 500
 
     const totaleCelle = utils.getTotaleCelle(versione);
     const bonus = utils.getBonusFinale(numBombe, totaleCelle);

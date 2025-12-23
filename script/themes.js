@@ -16,16 +16,6 @@ export const themes = {
         text: '#ffffff',
         textDark: '#000000'
     },
-    dark: {
-        primary: '#60a5fa',
-        primaryHover: '#3b82f6',
-        secondary: '#a78bfa',
-        background: '#000000',
-        cardBg: '#1a1a1a',
-        cellBg: '#2a2a2a',
-        text: '#f9fafb',
-        textDark: '#000000'
-    },
     neon: {
         primary: '#ec4899',
         primaryHover: '#db2777',
@@ -45,26 +35,6 @@ export const themes = {
         cellBg: '#047857',
         text: '#d1fae5',
         textDark: '#064e3b'
-    },
-    sunset: {
-        primary: '#f59e0b',
-        primaryHover: '#d97706',
-        secondary: '#ef4444',
-        background: '#7c2d12',
-        cardBg: '#9a3412',
-        cellBg: '#b45309',
-        text: '#fef3c7',
-        textDark: '#7c2d12'
-    },
-    ocean: {
-        primary: '#0ea5e9',
-        primaryHover: '#0284c7',
-        secondary: '#06b6d4',
-        background: '#0c4a6e',
-        cardBg: '#075985',
-        cellBg: '#0369a1',
-        text: '#e0f2fe',
-        textDark: '#0c4a6e'
     },
     cyberpunk: {
         primary: '#ff00ff',
@@ -131,12 +101,14 @@ export const themes = {
 // Mappatura tema -> immagine
 const themeImages = {
     'default': 'images/gray-square.png',
-    'dark': 'images/scuro-square.png',
     'neon': 'images/neon-square.png',
     'forest': 'images/forest-square.png',
-    'sunset': 'images/tramonto-square.png',
-    'ocean': 'images/oceano-square.png'
-
+    'lava': 'images/lava-square.png',
+    'cyberpunk': 'images/cyberpunk-square.png',
+    'arctic': 'images/arctic-square.png',
+    'goldRush': 'images/gold-square.png',
+    'matrix': 'images/matrix-square.png',
+    'purpleHaze': 'images/purple-haze-square.png',
 };
 
 // Ottiene l'immagine per un tema specifico
@@ -148,7 +120,7 @@ export function getThemeImage(theme) {
 export function applyTheme(themeName) {
     currentTheme = themeName;
     const theme = themes[themeName];
-    
+
     if (!theme) return;
 
     // Applica le variabili CSS
@@ -202,7 +174,7 @@ export function initThemeSwitcher(onThemeChange) {
         btn.addEventListener('click', () => {
             applyTheme(btn.dataset.theme);
             themeMenu.classList.add('hidden');
-            
+
             // Callback per aggiornare le celle se il gioco è in corso
             if (onThemeChange) {
                 onThemeChange(btn.dataset.theme);
